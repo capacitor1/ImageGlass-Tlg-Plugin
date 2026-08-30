@@ -1,0 +1,46 @@
+name: publish
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:          # 允许在网页上手动重新构建
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          - { os: windows-latest, rid: win-x64,   plat: x64 }
+          - { os: ubuntu-latest,  rid: linux-x64, plat: x64 }
+          - { os: macos-latest,   rid: osx-arm64, plat: arm64 }
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Publish (${{ matrix.rid }})
+        run: |
+          dotnet publish source/ImageGlassTlgCodec.csproj `
+            -c Release -r ${{ matrix.rid }} -p:Platform=${{ matrix.plat }} `
+            -o out/${{ matrix.rid }}
+        shell: pwsh
+
+      - name: Package .igplugin.zip
+        run: |
+          $files = Get-ChildItem "out/${{ matrix.rid }}" -File | Where-Object {
+            $_.Name -in @('TlgCodec.dll','igplugin.json') -or $_.Extension -eq '.so' -or $_.Extension -eq '.dylib'
+          }
+          Compress-Archive -Path $files.FullName `
+            -DestinationPath "TlgCodec-${{ matrix.rid }}.igplugin.zip"
+        shell: pwsh
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: TlgCodec-${{ matrix.rid }}
+          path: |
+            TlgCodec-${{ matrix.rid }}.igplugin.zip
+            out/${{ matrix.rid }}/TlgCodec.*
+            out/${{ matrix.rid }}/igplugin.json
