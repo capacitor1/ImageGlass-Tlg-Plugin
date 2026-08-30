@@ -1,0 +1,10 @@
+{
+  "id": "Plugin_TlgCodec",
+  "name": "KiriKiri TLG Codec",
+  "description": "Native codec plugin that decodes KiriKiri game engine TLG5/TLG6 images (.tlg).",
+  "version": "1.0.0",
+  "author": "capacitor1",
+  "website": "https://github.com/capacitor1/ImageGlass-Tlg-Plugin",
+  "kind": "Codec",
+  "executable": "TlgCodec.dll"
+}
