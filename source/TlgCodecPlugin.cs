@@ -348,9 +348,6 @@ internal static unsafe class TlgCodecPlugin
         _codecApi->BeginEncodeMultiFrame = null;
         _codecApi->EncodeFrame = null;
         _codecApi->EndEncodeMultiFrame = null;
-
-        // Scaled decode: optional; null lets the host fall back to full decode + downscale.
-        _codecApi->DecodeStaticRasterScaled = null;
     }
 
     private static void InitPluginApi()

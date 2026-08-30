@@ -26,8 +26,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <!-- 用 NuGet 包：外部项目不能 ProjectReference 仓库内 SDK -->
-    <PackageReference Include="ImageGlass.SDK" Version="1.2.0" />
+    <PackageReference Include="ImageGlass.SDK" Version="1.1.0" />
     <!-- CP932 只用于 "tags" 尾段的基图文件名，失败时降级 Latin1，可安全裁剪 -->
     <PackageReference Include="System.Text.Encoding.CodePages" Version="10.0.0" />
     <TrimmerRootAssembly Include="System.Text.Encoding.CodePages" />
